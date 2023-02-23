@@ -1,0 +1,90 @@
+#http to https
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+################################################################################
+# 1. URL Permalink
+################################################################################
+
+# RewriteEngine on
+
+# RewriteBase /jobs
+
+RewriteRule ^artikel-([0-9]+)-(.*)\.html$ home.php?act=artikeldetail&&id_berita=$1 [L]
+RewriteRule ^artikelkategori-([0-9]+)-(.*)\.html$ home.php?act=artikelkategori&&idkategori=$1 [L]
+RewriteRule ^perusahaan-([0-9]+)-(.*)\.html$ home.php?act=perusahaandetail&&id_perusahaan=$1 [L]
+RewriteRule ^lowongan-([0-9]+)-(.*)\.html$ home.php?act=lowongandetail&&id_lowongan=$1 [L]
+RewriteRule ^pelamar-([0-9]+)-(.*)\.html$ home.php?act=pelamardetail&&id_pelamar=$1 [L]
+RewriteRule ^pelamardok-([0-9]+)-(.*)\.html$ home.php?act=pelamardok&&id_pelamarloker=$1 [L]
+RewriteRule ^pelamarkategori-(.*)\.html$ home.php?act=pelamarkategori&&pendidikan=$1 [L]
+RewriteRule ^lowonganbidang-(.*)\.html$ home.php?act=lowonganbidang&&idbidang=$1 [L]
+RewriteRule ^p3mi-([0-9]+)-(.*)\.html$ home.php?act=p3midetail&&id_pjtki=$1 [L]
+RewriteRule ^pengumuman-([0-9]+)-(.*)\.html$ home.php?act=pengumumandetail&&id_perusahaan=$1 [L]
+
+# Mod Rewrite halaman statis
+RewriteRule ^([^/]*)\.html$ home.php?act=$1 [L]
+RewriteRule ^home$ index.php [L]
+
+################################################################################
+# 2. Ditch Ugly Directory Pages
+################################################################################
+
+# Prevent directory listing pages from showing
+Options All -Indexes
+
+################################################################################
+# 3. Easy Error Messages
+################################################################################
+
+# Redirect to Error Page
+ErrorDocument 404 http://localhost/jobs/home
+ErrorDocument 500 http://localhost/jobs/home
+ErrorDocument 403 http://localhost/jobs/home
+
+################################################################################
+# 4. Speed Up your Website?
+################################################################################
+
+<IfModule mod_expires.c>
+#Expire Header
+ExpiresActive On
+ExpiresDefault A0
+
+# Set gif, png, jpg, jpeg to expire after 7 days.
+ExpiresByType image/gif A604800
+ExpiresByType image/png A604800
+ExpiresByType image/jpg A604800
+ExpiresByType image/jpeg A604800
+ExpiresByType image/ico A604800
+
+# Set css and javascript to expire after 1 day.
+# These tend to change more regularly it's a good idea to update this to longer
+# once you've established your site content!
+ExpiresByType text/css A86400
+ExpiresByType text/javascript A86400
+
+# How the expiry is calculated:
+# A86400  == 1 day in the future  (60 secs * 60 mins * 24 hours * 1 day = 86400)
+# A604800 == 7 days in the future (60 secs * 60 mins * 24 hours * 7 day = 604,800)
+</IfModule>
+
+################################################################################
+# 5. Speed It Up even More?
+################################################################################
+
+<IfModule mod_deflate.c>
+# Compress plaintext, html, xml, and css files
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE text/css
+
+# Other filetypes that you can compress
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
